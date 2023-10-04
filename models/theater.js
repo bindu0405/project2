@@ -8,8 +8,8 @@ const newTheaterSchema=new mongoose.Schema({
         numberOfShows: {type:Number},
         timings:[{
             showNo: {type:Number},
-            startTime: {type:Date, required:true},
-            endTime: {type:Date, required:true}
+            startTime: {type:String} ,     //{type:Date, required:true},
+            endTime: {type:String}      //{type:Date, required:true}
         }],
         capacity: {type:Number},
         date: {type:Date}

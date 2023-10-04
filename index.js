@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser=require('body-parser')
-let port=3500;
+let port=8500;
 //local imports
 const connectDb=require('./db.js')
 const theaterRoutes= require('./routes/theaterapis.js')
