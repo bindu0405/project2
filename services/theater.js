@@ -93,19 +93,29 @@ async function fcnTicketBooking(req){
                         if(check.screens[j].timings[k].startTime==req.body.time){
                             console.log("123");
                             if(req.body.seatNo<=check.screens[j].capacity){
-                                console.log("123");
-                                let result=new ticketBooking({
-                                    theaterName:req.body.theaterName,
-                                    screenName:req.body.screenName,
-                                    seatNo:req.body.seatNo,
-                                    time:req.body.time
-                                })
-                                let dbResponse=await result.save();
-                                return {message:"ticket booked successfully!"}
-                                break;
-                            }else{
-                                return {message:"seat no not found"}
+                                let checkSeat=await ticketBooking.findOne({seatNo:req.body.seatNo})
+                                console.log(checkSeat, "121212")
+                                if(checkSeat==null || checkSeat.seatNo!=req.body.seatNo ){
+                                    console.log("123");
+                                    let result=new ticketBooking({
+                                        theaterName:req.body.theaterName,
+                                        screenName:req.body.screenName,
+                                        seatNo:req.body.seatNo,
+                                        time:req.body.time
+                                    })
+                                    let dbResponse=await result.save();
+                                    return {message:"ticket booked successfully!"}
+                                }
+                                else{
+                                    return {message:"seatNO already booked!"}
+                                }
                             }
+                            else{
+                                return {message:"seat no not available"}
+                            }
+                        }
+                        else{
+                            return {messge:"show time not found."}
                         }
                     }
                     return {message:"show not available"}
@@ -118,12 +128,31 @@ async function fcnTicketBooking(req){
     }
 }
 
+async function fcnGetAllTicketsInOrder(req){
+    try{
+        let check=await ticketBooking.find({theaterName:req.body.theaterName, screenName:req.body.screenName});
+        console.log(check);
+        if(check.length==0){
+            return {message:"theater not found"}
+        }
+           check.map(str => {
+            let seatNo=new seat(str.seatNo);
+          }); 
+          let order = check.sort(
+            (strA, strB) => Number(strA.seatNo) - Number(strB.seatNo),
+          );
+        
+          console.log(order, "++++++")
+          return order;
 
-
-
+    }catch(err){
+        throw err;
+    }
+}
 
 exports.theaterServices={
     fcnInsertTheaterDetails:fcnInsertTheaterDetails,
     fcnGetAllTheatersWithScreenNameAndStartTime:fcnGetAllTheatersWithScreenNameAndStartTime,
-    fcnTicketBooking:fcnTicketBooking
+    fcnTicketBooking:fcnTicketBooking,
+    fcnGetAllTicketsInOrder:fcnGetAllTicketsInOrder
 }

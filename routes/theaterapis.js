@@ -32,4 +32,15 @@ router.put("/ticketBooking", async function(req, res){
   }
 })
 
+//fcnGetAllTicketsInOrder
+router.put("/getAllTicketsInOrder", async function(req, res){
+  try{
+      let data=await theaterServices.fcnGetAllTicketsInOrder(req);
+      res.status(200).send(data);
+  }catch(err){
+    throw err;
+  }
+})
+
+
 module.exports=router;
