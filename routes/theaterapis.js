@@ -14,6 +14,7 @@ router.put("/insertTheaterDetails", async function(req,res){
   }
 }) 
 
+//date: 04/10/2023
 router.put("/getAllTheatersWithScreenNameAndStartTime", async function(req, res){
   try{
       let data=await theaterServices.fcnGetAllTheatersWithScreenNameAndStartTime(req);
@@ -23,6 +24,7 @@ router.put("/getAllTheatersWithScreenNameAndStartTime", async function(req, res)
   }
 })
 
+//date: 04/10/2023
 router.put("/ticketBooking", async function(req, res){
   try{
       let data=await theaterServices.fcnTicketBooking(req);
@@ -32,7 +34,7 @@ router.put("/ticketBooking", async function(req, res){
   }
 })
 
-//fcnGetAllTicketsInOrder
+//date: 05/10/2023
 router.put("/getAllTicketsInOrder", async function(req, res){
   try{
       let data=await theaterServices.fcnGetAllTicketsInOrder(req);

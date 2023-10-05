@@ -23,14 +23,15 @@ async function fcnInsertTheaterDetails(req){
                 if(check.screens.length<check.numberOfScreens){
                     console.log(check.screens[i].screenName, "1245")
                     if(check.screens[i].screenName==req.body.screens[0].screenName){
+                        console.log("12012")
                         for(j=0;j<check.screens[i].timings.length;j++){
                             if(check.screens[i].timings.length<check.screens[i].numberOfShows){
-                                console.log("1212")
+                                console.log("12012")
                                 if(check.screens[i].timings[j].showNo==req.body.screens[0].timings[0].showNo){
                                     return {message:"show number alredy existed"}
                                 }else{
                                     console.log(check.screens[i],"121234")
-                                    dbResponse=await theaterDetails.findOneAndUpdate({theaterName:req.body.theaterName, screens:req.body.screens}, {$push:{timings:req.body.timings}})                                    
+                                    dbResponse=await theaterDetails.findOneAndUpdate({theaterName:req.body.theaterName}, {$screens:{$push:{timings:req.body.timings}}})                                    
                                     return {message:"new show added"}    
                                 }
                             }
@@ -136,7 +137,7 @@ async function fcnGetAllTicketsInOrder(req){
             return {message:"theater not found"}
         }
            check.map(str => {
-            let seatNo=new seat(str.seatNo);
+            let seatNo=new Number(str.seatNo);
           }); 
           let order = check.sort(
             (strA, strB) => Number(strA.seatNo) - Number(strB.seatNo),
