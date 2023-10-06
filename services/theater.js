@@ -159,7 +159,7 @@ async function fcnCancelTicket(req){
             return {message:"seatNo does not booked to cancel"}
         }
         else{
-            let dbResponse=await ticketBooking.findOneAndDelete({theaterName:req.body.theaterName, screenName:req.body.screenName, seatNo:req.body.seatNo})
+            let dbResponse=await ticketBooking.findOneAndDelete({theaterName:req.body.theaterName, screenName:req.body.screenName, startTime:req.body.startTime, seatNo:req.body.seatNo})
             return {message:"ticket canceled succesfully!"}
         }
     }catch(err){
