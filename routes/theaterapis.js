@@ -45,4 +45,16 @@ router.put("/getAllTicketsInOrder", async function(req, res){
 })
 
 
+//date: 06/10/2023
+router.put("/cancelTicket", async function(req, res){
+  try{
+      let data=await theaterServices.fcnCancelTicket(req);
+      res.status(200).send(data);
+  }catch(err){
+    throw err;
+  }
+})
+
+
+
 module.exports=router;

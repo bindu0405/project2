@@ -151,9 +151,27 @@ async function fcnGetAllTicketsInOrder(req){
     }
 }
 
+async function fcnCancelTicket(req){
+    try{
+        let check=await ticketBooking.find({seatNo:req.body.seatNo})
+        console.log(check, "121212")
+        if(check.length==0){
+            return {message:"seatNo does not booked to cancel"}
+        }
+        else{
+            let dbResponse=await ticketBooking.findOneAndDelete({theaterName:req.body.theaterName, screenName:req.body.screenName, seatNo:req.body.seatNo})
+            return {message:"ticket canceled succesfully!"}
+        }
+    }catch(err){
+        throw err;
+    }
+}
+
+
 exports.theaterServices={
     fcnInsertTheaterDetails:fcnInsertTheaterDetails,
     fcnGetAllTheatersWithScreenNameAndStartTime:fcnGetAllTheatersWithScreenNameAndStartTime,
     fcnTicketBooking:fcnTicketBooking,
-    fcnGetAllTicketsInOrder:fcnGetAllTicketsInOrder
+    fcnGetAllTicketsInOrder:fcnGetAllTicketsInOrder,
+    fcnCancelTicket:fcnCancelTicket
 }
