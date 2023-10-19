@@ -217,9 +217,9 @@ async function fcnGetTheaterBYMovieNameAndStartTime(req){
     }
 }
 
-async function fcnChangeShowNOForTicketBooking(req){
+async function fcnChangeShowNoForTicketBooking(req){
     try{
-        let check=await ticketBooking.find
+        let check=await ticketBooking.findOne()
     }catch(err){
         throw err;
     }
@@ -234,7 +234,7 @@ exports.theaterServices={
     fcnCancelTicket:fcnCancelTicket,
     fcnGetTheaterByMovieName:fcnGetTheaterByMovieName,
     fcnGetTheaterBYMovieNameAndStartTime:fcnGetTheaterBYMovieNameAndStartTime,
-    fcnChangeShowNOForTicketBooking:fcnChangeShowNOForTicketBooking
+    fcnChangeShowNoForTicketBooking:fcnChangeShowNoForTicketBooking
 
     
 }
