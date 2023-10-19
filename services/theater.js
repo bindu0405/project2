@@ -24,7 +24,7 @@ async function fcnInsertTheaterDetails(req){
                     console.log(check.screens[i].screenName, "1245")
                     if(check.screens[i].screenName==req.body.screens[0].screenName){
                         console.log("12012")
-                       /* for(j=0;j<check.screens[i].timings.length;j++){
+                       /*for(j=0;j<check.screens[i].timings.length;j++){
                             if(check.screens[i].timings.length<check.screens[i].numberOfShows){
                                 console.log("12012")
                                 if(check.screens[i].timings[j].showNo==req.body.screens[0].timings[0].showNo){
@@ -69,7 +69,7 @@ async function fcnGetAllTheatersWithScreenNameAndStartTime(req){
                 }
             }
             return array;
-            console.log(array, "123")
+           
         }
 
     }catch(err){
@@ -91,18 +91,19 @@ async function fcnTicketBooking(req){
                     console.log("123");
                     for(let k=0;check.screens[j].timings.length;k++){
                         console.log(check.screens[j].timings[k].startTime, "1567")
-                        if(check.screens[j].timings[k].startTime==req.body.time){
+                        if(check.screens[j].timings[k].startTime==req.body.startTime || check.screens[j].timings[k].showNo==req.body.showNo){
                             console.log("123");
-                            if(req.body.seatNo<=check.screens[j].capacity){
-                                let checkSeat=await ticketBooking.findOne({seatNo:req.body.seatNo})
+                            if(req.body.seatNo<=check.screens[j].capacity ){
+                                let checkSeat=await ticketBooking.findOne({showNo:req.body.showNo, seatNo:req.body.seatNo, startTime:req.body.startTime})
                                 console.log(checkSeat, "121212")
-                                if(checkSeat==null || checkSeat.seatNo!=req.body.seatNo ){
+                                if(checkSeat==null || checkSeat.seatNo!=req.body.seatNo || checkSeat.startTime!=req.body.startTime){
                                     console.log("123");
                                     let result=new ticketBooking({
                                         theaterName:req.body.theaterName,
                                         screenName:req.body.screenName,
-                                        seatNo:req.body.seatNo,
-                                        time:req.body.time
+                                        showNo:req.body.showNo,
+                                        startTime:req.body.startTime,
+                                        seatNo:req.body.seatNo
                                     })
                                     let dbResponse=await result.save();
                                     return {message:"ticket booked successfully!"}
@@ -115,9 +116,9 @@ async function fcnTicketBooking(req){
                                 return {message:"seat no not available"}
                             }
                         }
-                        else{
-                            return {messge:"show time not found."}
-                        }
+                        //else{
+                         //   return {messge:"show time not found."}
+                       // }
                     }
                     return {message:"show not available"}
                 }
@@ -216,6 +217,14 @@ async function fcnGetTheaterBYMovieNameAndStartTime(req){
     }
 }
 
+async function fcnChangeShowNOForTicketBooking(req){
+    try{
+        let check=await ticketBooking.find
+    }catch(err){
+        throw err;
+    }
+}
+
 
 exports.theaterServices={
     fcnInsertTheaterDetails:fcnInsertTheaterDetails,
@@ -224,6 +233,8 @@ exports.theaterServices={
     fcnGetAllTicketsInOrder:fcnGetAllTicketsInOrder,
     fcnCancelTicket:fcnCancelTicket,
     fcnGetTheaterByMovieName:fcnGetTheaterByMovieName,
-    fcnGetTheaterBYMovieNameAndStartTime:fcnGetTheaterBYMovieNameAndStartTime
+    fcnGetTheaterBYMovieNameAndStartTime:fcnGetTheaterBYMovieNameAndStartTime,
+    fcnChangeShowNOForTicketBooking:fcnChangeShowNOForTicketBooking
+
     
 }

@@ -24,7 +24,7 @@ router.put("/getAllTheatersWithScreenNameAndStartTime", async function(req, res)
   }
 })
 
-//date: 04/10/2023
+//date: 04/10/2023, 19/10/2023
 router.put("/ticketBooking", async function(req, res){
   try{
       let data=await theaterServices.fcnTicketBooking(req);
