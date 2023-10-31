@@ -5,6 +5,7 @@ const newTicketSchema=new mongoose.Schema({
     showNo: {type:Number},
     startTime: {type:String},
     seatNo: {type:Number},
+    changeSeatNo: {type:Number}
 })
 
 const ticketBookingDetails=mongoose.model("ticketBooking", newTicketSchema);

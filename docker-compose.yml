@@ -1,0 +1,20 @@
+version: "3"
+services:
+   database:
+    image: mongo:4.4.6
+    ports:
+      - 27017:27017
+    volumes:
+      - /home/dowmloads/project2/db
+  
+   project2:
+    image: nginx
+    ports:
+        - "8500:8500"
+    volumes:
+      - /home/downloads/project2/index
+    depends_on:
+      - mongo
+    links:
+      - mongo
+ 

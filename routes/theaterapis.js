@@ -67,7 +67,17 @@ router.put("/getTheaterByMovieName", async function(req, res){
 //date: 18/10/2023
 router.put("/getTheaterBYMovieNameAndStartTime", async function(req, res){
   try{
-      let data=await theaterServices.fcnGetTheaterBYMovieNameAndStartTime(req);
+      let data=await  theaterServices.fcnGetTheaterBYMovieNameAndStartTime(req);
+      res.status(200).send(data);
+  }catch(err){
+    throw err;
+  }
+})
+
+//date: 19/10/2023
+router.put("/changeSeatNoForTicketBooking", async function(req, res){
+  try{
+      let data=await theaterServices.fcnChangeSeatNoForTicketBooking(req);
       res.status(200).send(data);
   }catch(err){
     throw err;

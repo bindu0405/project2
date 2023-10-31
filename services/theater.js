@@ -1,4 +1,4 @@
-/*  */const { kill } = require("process");
+//const { kill } = require("process");
 const theaterDetails=require("../models/theater")
 const ticketBooking=require("../models/ticketbooking")
 
@@ -217,9 +217,21 @@ async function fcnGetTheaterBYMovieNameAndStartTime(req){
     }
 }
 
-async function fcnChangeShowNoForTicketBooking(req){
+async function fcnChangeSeatNoForTicketBooking(req){
     try{
-        let check=await ticketBooking.findOne()
+        let check=await ticketBooking.find({theaterName:req.body.theaterName, screenName:req.body.screenName, showNo:req.body.showNo,  startTime:req.body.startTime})
+        console.log(check, "2321") 
+            for(i=0;i<check.length;i++){
+                if(check[i].seatNo!=req.body.seatNo){
+                    let a= {gap:req.body.seatNo}
+                    let dbResponse=await  ticketBooking.updateOne(check[i], {$set:{a:req.body.changeSeatNo}})
+                    console.log(dbResponse, "9090")
+                    return {message:"seatNo changed succssfully"}
+                }
+                return {message:"seatNo already booked"}
+            }
+            //return {message:"seatNo changed succssfully"}
+        
     }catch(err){
         throw err;
     }
@@ -234,7 +246,7 @@ exports.theaterServices={
     fcnCancelTicket:fcnCancelTicket,
     fcnGetTheaterByMovieName:fcnGetTheaterByMovieName,
     fcnGetTheaterBYMovieNameAndStartTime:fcnGetTheaterBYMovieNameAndStartTime,
-    fcnChangeShowNoForTicketBooking:fcnChangeShowNoForTicketBooking
+    fcnChangeSeatNoForTicketBooking:fcnChangeSeatNoForTicketBooking
 
     
 }
