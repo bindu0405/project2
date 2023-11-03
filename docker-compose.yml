@@ -1,20 +1,47 @@
 version: "3"
 services:
+
    database:
+    build: nginix
     image: mongo:4.4.6
     ports:
       - 27017:27017
+    deploy: 
+       replicas: 1 
+       restart_policy:  
+          condition: on-failure  
+    hostname: mongo
     volumes:
-      - /home/dowmloads/project2/db
-  
-   project2:
-    image: nginx
+      - /home/bindu/Downloads/project2/db:data/DB
+    networks:
+       - theaters
+
+   theaterproject:
+    image: theaterproject
     ports:
         - "8500:8500"
+    deploy: 
+      replicas: 1
+      restart_policy:
+        condition: on-failure    
+    hostname: theaterproject 
+    environment:
+      - name=value
+      - host=0.0.0.0
+      - port=8500
     volumes:
-      - /home/downloads/project2/index
+      - /home/bindu/Downloads/project2/index:/user/app
     depends_on:
       - mongo
     links:
       - mongo
+    networks:
+      -theaters  
+
+
+networks:
+  theaters:
+    external: true
  
+
+
