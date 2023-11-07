@@ -2,89 +2,54 @@
 const theaterDetails=require("../models/theater")
 const ticketBooking=require("../models/ticketbooking")
 
-// async function fcnInsertTheaterDetails(req){
-//     try{
-//         let result;
-//         let dbResponse;
-//         let check=await theaterDetails.findOne({theaterName:req.body.theaterName})
-//         if(check==null){
-//             result=new theaterDetails({
-//                 theaterName:req.body.theaterName,
-//                 numberOfScreens:req.body.numberOfScreens,
-//                 screens:req.body.screens            })
-//             dbResponse=await result.save();
-//             return {message:"new theater inserted"}
-//         }
-//         else{
-//             for(i=0;i<check.screens.length;i++){
-//                 if(check.screens.length<check.numberOfScreens || check.screens[i].screenName==req.body.screens[0].screenName){
-//                     for(j=0;j<check.screens[i].timings.length;j++){
-//                         if(check.screens[i].timings.length<check.screens[i].numberOfShows){
-//                             if(check.screens[i].timings[j].showNo==req.body.screens[0].timings[0].showNo){
-//                                  return {message:"show number alredy existed"}
-//                             }else{
-//                                 var res= check.screens[i].timings.push(req.body.screens[0].timings[0])
-//                                 dbResponse=await check.save();
-//                                 //dbResponse=await theaterDetails.findByIdAndUpdate({ theaterName: check.theaterName, "screens.screenName": check.screens[i].screenName },{$push:{"screens.$.timings":req.screens[0].timings[0]}})                                    
-//                                 return {message:"new show added"}    
-//                             }
-//                         }
-//                     }
-//                     return {message:"shows not available"}
-//                 }
-//                  return {massage:"screens not available"}          
-            
-//             }                   
-//             dbResponse=await theaterDetails.updateOne({theaterName:req.body.theaterName}, {$push:{screens:req.body.screens}})
-//             return {message:"new screen added"}   
-//         }
-//     }catch(err){
-//         throw err;
-//     }
-// }
 
- async function fcnInsertTheaterDetails(req) {
-    try {
+async function fcnInsertTheaterDetails(req){
+    try{
         let result;
         let dbResponse;
-        let check = await theaterDetails.findOne({ theaterName: req.body.theaterName });
-        if (check == null) {
-            result = new theaterDetails({
-                theaterName: req.body.theaterName,
-                numberOfScreens: req.body.numberOfScreens,
-                screens: req.body.screens,
-            });
-            dbResponse = await result.save();
-            return { message: "new theater inserted" };
-        } else {
-            for (let i = 0; i < check.screens.length; i++) {
-                if (check.screens[i].screenName === req.body.screens[0].screenName) {
-                    for (let j = 0; j < check.screens[i].timings.length; j++) {
-                        if (check.screens[i].timings[j].showNo === req.body.screens[0].timings[0].showNo) {
-                            //Update the timing here
-                            check.screens[i].timings[j] = req.body.screens[0].timings[0];
-                            dbResponse = await check.save();
-                            return { message: "timings updated for existing screen" };
+        let check=await theaterDetails.findOne({theaterName:req.body.theaterName})
+        if(check==null){
+            result=new theaterDetails({
+                theaterName:req.body.theaterName,
+                numberOfScreens:req.body.numberOfScreens,
+                screens:req.body.screens            })
+            dbResponse=await result.save();
+            return {message:"new theater inserted"}
+        }
+        else{
+            for(i=0;i<check.screens.length;i++){
+                if( check.screens[i].screenName==req.body.screens[0].screenName){
+                    if(check.screens[i].timings.length<check.screens[i].numberOfShows){
+                        for(j=0;j<check.screens[i].timings.length;j++){
+                            console.log(check.screens[i].timings, "89898")
+                            if(check.screens[i].timings[j].showNo==req.body.screens[0].timings[0].showNo){
+                                return {message:"show number alredy existed"}
+                            }
                         }
-                    }
-                    //If the show number is not found, add new timing
-                    check.screens[i].timings.push(req.body.screens[0].timings[0]);
-                    dbResponse = await check.save();
-                    return { message: "new timing added for existing screen" };
+                        var res= check.screens[i].timings.push(req.body.screens[0].timings[0])
+                        console.log( check.screens[i].timings,req.body.screens[0].timings[0], "676767")
+                        dbResponse=await check.save();
+                        //dbResponse=await theaterDetails.findByIdAndUpdate( check.screens[i].timings ,{$push:{"timings":req.body.screens[0].timings[0]}})                                    
+                        return {message:"new show added"}
+                    } 
+                }             
+                if(check.screens[i].screenName==req.body.screens[0].screenName){
+                    return {message:"screenName alredy existed & noOfShows not available"}
                 }
             }
-            //If the screen name is not found, add new screen
-            check.screens.push(req.body.screens[0]);
-            dbResponse = await check.save();
-            return { message: "new screen added" };
+            if(check.screens.length<check.numberOfScreens){                  
+                dbResponse=await theaterDetails.updateOne({theaterName:req.body.theaterName}, {$push:{screens:req.body.screens}})
+                return {message:"new screen added"} 
+            }
+            return {message:"noOfScreens not available"}
+             
         }
-
         
-        
-    } catch (err) {
+    }catch(err){
         throw err;
     }
 }
+
  
 async function fcnGetAllTheatersWithScreenNameAndStartTime(req){
     try{
@@ -149,9 +114,6 @@ async function fcnTicketBooking(req){
                                 return {message:"seat no not available"}
                             }
                         }
-                        //else{
-                         //   return {messge:"show time not found."}
-                       // }
                     }
                     return {message:"show not available"}
                 }
