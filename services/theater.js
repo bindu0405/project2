@@ -12,7 +12,8 @@ async function fcnInsertTheaterDetails(req){
             result=new theaterDetails({
                 theaterName:req.body.theaterName,
                 numberOfScreens:req.body.numberOfScreens,
-                screens:req.body.screens            })
+                screens:req.body.screens            
+            })
             dbResponse=await result.save();
             return {message:"new theater inserted"}
         }
