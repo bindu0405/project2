@@ -81,6 +81,7 @@ async function fcnTicketBooking(req){
         let check=await theaterDetails.findOne({theaterName:req.body.theaterName})
 
         if(check==null){
+            
             return {message:"theater not found"}
         }
         else{
