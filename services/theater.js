@@ -51,7 +51,7 @@ async function fcnInsertTheaterDetails(req){
     }
 }
 
- 
+
 async function fcnGetAllTheatersWithScreenNameAndStartTime(req){
     try{
         let check=await theaterDetails.find()
